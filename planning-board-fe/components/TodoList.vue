@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { randomUUID } from 'crypto';
+import { type } from 'os';
 import { Ref, ref } from 'vue'
 
-interface TodoItem {
+export type TodoItem = {
   id: string
   name: string,
   deleted: boolean
@@ -12,30 +13,20 @@ const todoItems: Ref<TodoItem[]> = ref([
   { name: "Service boiler", deleted: false, id: randomUUID() }, { name: "Gas check", deleted: false, id: randomUUID() }, { name: "Wash dishes", deleted: false, id: randomUUID() }
 ])
 
-function deleteTodoItem(id) {
-  alert(id)
-  todoItems.value.find(todoItem => todoItem.id === id).deleted = true
-  console.log(todoItems.value.find(todoItem => todoItem.id === id))
+function deleteTodoItem() {
+  console.log('id')
+  // todoItems.value.find(todoItem => todoItem.id === id).deleted = true
+  // console.log(todoItems.value.find(todoItem => todoItem.id === id))
 }
-
-// reactive state
-const count = ref(0)
-
-// functions that mutate state and trigger updates
-function increment() {
-  count.value++
-}
-
 </script>
 
 <template>
-  <h2>
-    <slot />
-  </h2>
-  <ul v-if="todoItems">
-    <li v-for="item in todoItems">{{ item.name }}<button v-if="!item.deleted" @click="deleteTodoItem(item.id)">Delete {{
-        item.id
-    }}</button></li>
-  </ul>
-  <button @click="increment">{{ count }}</button>
+  <div v-if="todoItems">
+    <TodoItem v-for="item in todoItems" :item="item" />
+    <br />
+    <br />
+    <TodoItem />
+
+  </div>
+  <!-- <button @click="increment">Count is: {{ count }}</button> -->
 </template>
